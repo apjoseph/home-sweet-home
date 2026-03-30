@@ -1,0 +1,9 @@
+[global]
+line-length = 80
+respect-gitignore = true
+
+[MD013]
+line-length = 80
+code-blocks = false
+tables = false
+reflow = true

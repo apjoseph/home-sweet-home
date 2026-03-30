@@ -1,0 +1,74 @@
+name: Manual Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to create (example: v1.2.3)"
+        required: true
+        type: string
+      target:
+        description: "Branch or commit SHA to tag"
+        required: true
+        default: main
+        type: string
+      prerelease:
+        description: "Mark this release as prerelease"
+        required: true
+        default: false
+        type: boolean
+      generate_notes:
+        description: "Generate release notes from merged PRs"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    name: Create tag and release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.target }}
+
+      - name: Validate tag
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          git check-ref-format --allow-onelevel "refs/tags/${TAG}"
+
+          if git rev-parse -q --verify "refs/tags/${TAG}" >/dev/null; then
+            echo "Tag ${TAG} already exists locally."
+            exit 1
+          fi
+
+          if git ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null 2>&1; then
+            echo "Tag ${TAG} already exists on origin."
+            exit 1
+          fi
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+          TARGET: ${{ inputs.target }}
+          PRERELEASE: ${{ inputs.prerelease }}
+          GENERATE_NOTES: ${{ inputs.generate_notes }}
+        run: |
+          args=(release create "$TAG" --target "$TARGET" --title "$TAG")
+
+          if [ "$PRERELEASE" = "true" ]; then
+            args+=(--prerelease)
+          fi
+
+          if [ "$GENERATE_NOTES" = "true" ]; then
+            args+=(--generate-notes)
+          fi
+
+          gh "${args[@]}"
