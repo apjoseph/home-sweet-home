@@ -1,0 +1,15 @@
+{
+  "languages": {
+    "Nix": {
+      "language_servers": ["nixd", "!nil"],
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "nix",
+          "arguments": ["fmt", "--"]
+        }
+      }
+    }
+  },
+  "load_direnv": "shell_hook"
+}
