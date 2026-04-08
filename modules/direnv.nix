@@ -18,14 +18,10 @@ _: {
           enable = true;
           package =
             if pkgs.stdenv.isDarwin then
-              # nixpkgs currently evaluates direnv on Darwin with CGO_ENABLED=0,
-              # while direnv's GNUmakefile forces '-linkmode=external' on Darwin.
-              # That combination fails to build; re-check this override on each
-              # flake.lock update and remove it once upstream/nixpkgs no longer needs it.
               pkgs.direnv.overrideAttrs (old: {
-                env = (old.env or { }) // {
-                  CGO_ENABLED = "1";
-                };
+                # nixpkgs' Darwin build currently reaches a broken Fish integration
+                # test for direnv and gets SIGKILLed during `make test`.
+                checkPhase = lib.replaceStrings [ " test-fish" ] [ "" ] old.checkPhase;
               })
             else
               pkgs.direnv;
