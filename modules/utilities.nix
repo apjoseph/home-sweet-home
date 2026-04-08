@@ -19,6 +19,7 @@ _: {
           pkgs.unzip
           pkgs.zstd
           pkgs.zlib
+          pkgs.rclone
         ];
         programs.ripgrep = {
           enable = true;
