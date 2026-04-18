@@ -5,16 +5,19 @@
     inputs.treefmt-nix.flakeModule
   ];
 
-  perSystem = _: {
+  perSystem =
+    { config, ... }:
+    {
+      repoDevShells.shells.all.packages = [ config.treefmt.build.wrapper ];
 
-    pre-commit.settings.hooks.treefmt = {
-      enable = true;
+      pre-commit.settings.hooks.treefmt = {
+        enable = true;
+      };
+
+      repoDevShells.shells.all.env.TREEFMT_CLEAR_CACHE = "1";
+
+      treefmt = {
+        projectRootFile = "flake.nix";
+      };
     };
-
-    repoDevShells.shells.all.env.TREEFMT_CLEAR_CACHE = "1";
-
-    treefmt = {
-      projectRootFile = "flake.nix";
-    };
-  };
 }

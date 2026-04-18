@@ -1,5 +1,9 @@
 {
   "languages": {
+    "Markdown": {
+      "language_servers": ["markdownlint"],
+      "format_on_save": "off"
+    },
     "Nix": {
       "language_servers": ["nixd", "!nil"],
       "format_on_save": "off",

@@ -19,6 +19,7 @@
         };
       };
 
+      repoDevShells.shells.all.packages = [ pkgs.prek ];
       repoDevShells.shells.all.shellHook = preCommitShellHook;
     };
 

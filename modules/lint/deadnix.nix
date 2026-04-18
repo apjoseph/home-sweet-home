@@ -1,7 +1,11 @@
 _: {
-  perSystem = _: {
-    treefmt.programs.deadnix = {
-      enable = true;
+  perSystem =
+    { pkgs, ... }:
+    {
+      repoDevShells.shells.all.packages = [ pkgs.deadnix ];
+
+      treefmt.programs.deadnix = {
+        enable = true;
+      };
     };
-  };
 }
