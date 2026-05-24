@@ -19,7 +19,7 @@
       options.features.gemini.enable = lib.mkEnableOption "gemini";
 
       config = lib.mkIf cfg.enable {
-        home.packages = [ unstablePkgs.gemini-cli ];
+        home.packages = [ unstablePkgs.antigravity-cli ];
       };
     };
 }
