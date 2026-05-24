@@ -13,7 +13,10 @@
     }:
     let
       cfg = config.features.gemini;
-      unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+      unstablePkgs = import inputs.nixpkgs-unstable {
+        inherit (pkgs.stdenv.hostPlatform) system;
+        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "antigravity" ];
+      };
     in
     {
       options.features.gemini.enable = lib.mkEnableOption "gemini";
