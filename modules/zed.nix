@@ -1,8 +1,18 @@
-_: {
+{ inputs, ... }:
+{
   flake.modules.homeManager.zed =
-    { lib, config, ... }:
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
     let
       cfg = config.features.zed;
+      unstablePkgs = import inputs.nixpkgs-unstable {
+        inherit (pkgs.stdenv.hostPlatform) system;
+        config.allowUnfree = true;
+      };
       globalExtensions = [
         "git-firefly"
         "toml"
@@ -15,6 +25,7 @@ _: {
       config = lib.mkIf cfg.enable {
         programs.zed-editor = {
           enable = true;
+          package = unstablePkgs.zed-editor;
           extensions = globalExtensions;
           userSettings = {
             agent_servers = {
