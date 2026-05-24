@@ -1,18 +1,26 @@
 {
   "languages": {
     "Markdown": {
-      "language_servers": ["markdownlint"],
-      "format_on_save": "off"
+      "format_on_save": "off",
+      "language_servers": [
+        "markdownlint"
+      ]
     },
     "Nix": {
-      "language_servers": ["nixd", "!nil"],
       "format_on_save": "off",
       "formatter": {
         "external": {
-          "command": "nix",
-          "arguments": ["fmt", "--"]
+          "arguments": [
+            "fmt",
+            "--"
+          ],
+          "command": "nix"
         }
-      }
+      },
+      "language_servers": [
+        "nixd",
+        "!nil"
+      ]
     }
   },
   "load_direnv": "shell_hook"

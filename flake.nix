@@ -32,6 +32,11 @@
       url = "github:hercules-ci/flake-parts";
     };
 
+    files = {
+      url = "github:mightyiam/files";
+      flake = false;
+    };
+
     import-tree.url = "github:vic/import-tree";
 
   };
@@ -41,6 +46,7 @@
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
 
       imports = [
+        inputs.flake-parts.flakeModules.flakeModules
         inputs.flake-parts.flakeModules.modules
         (inputs.import-tree ./modules)
       ];
