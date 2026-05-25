@@ -18,6 +18,10 @@
         inherit system;
         config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "antigravity" ];
       };
+      agyPkgs = import inputs.nixpkgs {
+        inherit system;
+        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "agy" ];
+      };
       agySources = {
         aarch64-darwin = {
           version = "1.0.2";
@@ -42,10 +46,10 @@
       };
       antigravityPackage = unstablePkgs.antigravity;
       agySource = agySources.${system} or (throw "Unsupported system for agy: ${system}");
-      agyPackage = pkgs.stdenvNoCC.mkDerivation {
+      agyPackage = agyPkgs.stdenvNoCC.mkDerivation {
         pname = "agy";
         inherit (agySource) version;
-        src = pkgs.fetchurl {
+        src = agyPkgs.fetchurl {
           inherit (agySource) url hash;
         };
 
