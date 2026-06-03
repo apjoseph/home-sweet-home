@@ -19,7 +19,7 @@ _: {
           package = pkgs.openssh;
           enableDefaultConfig = false;
 
-          settings = {
+          settings."*" = {
             AddKeysToAgent = "yes";
             Compression = false;
             ForwardAgent = false;
