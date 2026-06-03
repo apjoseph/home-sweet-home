@@ -12,7 +12,9 @@ _: {
         programs.neovim = {
           enable = true;
           defaultEditor = true;
-          extraLuaConfig = ''
+          withRuby = false;
+          withPython3 = false;
+          initLua = ''
             vim.opt.clipboard = "unnamedplus"
           '';
         };
