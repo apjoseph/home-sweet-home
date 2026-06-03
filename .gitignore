@@ -34,3 +34,4 @@ result
 .pre-commit-config.yaml
 .codex/config.toml
 .cache
+.antigravitycli
